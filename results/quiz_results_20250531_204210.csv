@@ -1,6 +1,0 @@
-question_number,question,question_type,user_answer,correct_answer,is_correct,options
-1,What is the primary function of a capacitor in an electrical circuit?,MCQ,To conduct electricity,To store electrical energy,False,"['To conduct electricity', 'To block the flow of electricity', 'To store electrical energy', 'To amplify electrical signals']"
-2,What is the primary function of the mitochondria in a cell?,MCQ,Production of proteins,Generation of energy,False,"['Production of proteins', 'Storage of genetic information', 'Regulation of cell growth', 'Generation of energy']"
-3,What is the primary function of the mitochondria in a cell?,MCQ,Producing DNA,Generating energy,False,"['Producing DNA', 'Generating energy', 'Regulating body temperature', 'Synthesizing proteins']"
-4,What is the primary function of a firewall in network security?,MCQ,Encryption,Blocking Unauthorized Access,False,"['Encryption', 'Authentication', 'Access Control', 'Blocking Unauthorized Access']"
-5,What is the primary function of the mitochondria in a cell?,MCQ,To produce nucleic acids,To generate energy for the cell,False,"['To produce nucleic acids', 'To synthesize proteins', 'To generate energy for the cell', 'To regulate cell growth']"
