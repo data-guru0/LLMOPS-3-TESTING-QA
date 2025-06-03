@@ -688,6 +688,14 @@ argocd login 34.72.5.170:31704 --username admin --password $(kubectl get secret 
 
 ---
 
+### Important:
+
+'''
+kubectl create secret generic groq-api-secret \
+  --from-literal=GROQ_API_KEY="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" \
+  -n argocd
+'''
+
 ### Step 4: Create a New Application in ArgoCD
 
 * Go to **Applications** → Click **New App**.
