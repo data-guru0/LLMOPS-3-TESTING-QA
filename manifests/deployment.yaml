@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: llmops-app
-        image: dataguru97/gitops-project:latest
+        image: dataguru97/llmops:latest
         ports:
         - containerPort: 8501
         env:
