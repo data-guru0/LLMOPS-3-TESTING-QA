@@ -2,6 +2,10 @@ import os
 import streamlit as st
 import pandas as pd
 
+from dotenv import load_dotenv  
+
+load_dotenv()
+
 # Import core logic classes and rerun utility
 from src.utils.helpers import rerun, QuizManager
 
