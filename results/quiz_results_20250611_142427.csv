@@ -1,0 +1,6 @@
+question_number,question,question_type,user_answer,correct_answer,is_correct,options
+1,"Who was the ruler who built Qutub Minar in Delhi, India?",MCQ,Alauddin Khalji,Qutb-ud-din Aibak,False,"['Alauddin Khalji', 'Iltutmish', 'Sher Shah Suri', 'Qutb-ud-din Aibak']"
+2,"Which Mughal emperor established the city of Shahjahanabad, which is now known as Old Delhi?",MCQ,Akbar,Shah Jahan,False,"['Akbar', 'Jahangir', 'Shah Jahan', 'Aurangzeb']"
+3,Which Indian emperor extended the Mughal Empire into its greatest extent?,MCQ,Akbar,Aurangzeb,False,"['Akbar', 'Jahangir', 'Shah Jahan', 'Aurangzeb']"
+4,Who led the Indian independence movement's Non-Cooperation Movement in 1920?,MCQ,Mahatma Gandhi,Mahatma Gandhi,True,"['Mahatma Gandhi', 'Subhas Chandra Bose', 'Jawaharlal Nehru', 'Bhagat Singh']"
+5,Which ancient Indian emperor commissioned the construction of the Khajuraho Group of Monuments?,MCQ,Rajputs,Chandela dynasty,False,"['Rajputs', 'Mauryans', 'Vijayanagara Empire', 'Chandela dynasty']"

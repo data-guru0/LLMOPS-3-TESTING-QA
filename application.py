@@ -28,9 +28,6 @@ def main():
     # Sidebar input: quiz settings
     st.sidebar.header("Quiz Settings")
 
-    # (Optional placeholder for multiple APIs in future)
-    api_choice = st.sidebar.selectbox("Select API", ["Groq"], index=0)
-
     # Choose MCQ or Fill-in-the-Blank
     question_type = st.sidebar.selectbox(
         "Select Question Type", ["Multiple Choice", "Fill in the Blank"], index=0

@@ -7,14 +7,9 @@ This Streamlit-based module defines the `QuizManager` class to:
 - Evaluate user answers and calculate correctness.
 - Display results and optionally save them as a CSV file.
 
-It supports:
-- LLM-backed question generation (MCQ and Fill-in-the-Blank)
-- User interaction and quiz attempts through Streamlit
-- Evaluation and storage of quiz results
-
 Use Case:
 ---------
-Build a fully interactive quiz app that uses LLMs to auto-generate questions and validate user performance.
+Create an interactive quiz app that auto-generates questions using LLMs and tracks user performance.
 """
 
 import os
@@ -22,21 +17,28 @@ import streamlit as st
 import pandas as pd
 from src.generator.question_generator import QuestionGenerator
 
-# Utility function to rerun the Streamlit app
+# -------------------------------
+# Helper function to rerun the app
+# -------------------------------
 def rerun():
-    """Trigger rerun of Streamlit app by toggling a session_state key."""
+    """Trigger Streamlit app rerun by changing a session state key."""
     st.session_state['rerun_trigger'] = not st.session_state.get('rerun_trigger', False)
 
-# Manages quiz lifecycle: generate -> take -> evaluate -> save
+# ------------------------------------
+# Main class to manage the quiz flow
+# ------------------------------------
 class QuizManager:
     def __init__(self):
-        # Stores questions, user answers, and final results
+        # Store generated questions, user answers, and results
         self.questions = []
         self.user_answers = []
         self.results = []
 
-    # Generates MCQ or Fill-in-the-Blank questions using the LLM
+    # -----------------------------
+    # Generate quiz questions using LLM
+    # -----------------------------
     def generate_questions(self, generator: QuestionGenerator, topic: str, question_type: str, difficulty: str, num_questions: int):
+        # Clear any previous quiz data
         self.questions = []
         self.user_answers = []
         self.results = []
@@ -44,7 +46,7 @@ class QuizManager:
         try:
             for _ in range(num_questions):
                 if question_type == "Multiple Choice":
-                    # Generate an MCQ using the LLM
+                    # Generate MCQ from LLM
                     question = generator.generate_mcq(topic, difficulty.lower())
                     self.questions.append({
                         'type': 'MCQ',
@@ -53,7 +55,7 @@ class QuizManager:
                         'correct_answer': question.correct_answer
                     })
                 else:
-                    # Generate a Fill-in-the-Blank using the LLM
+                    # Generate Fill-in-the-Blank from LLM
                     question = generator.generate_fill_blank(topic, difficulty.lower())
                     self.questions.append({
                         'type': 'Fill in the Blank',
@@ -61,17 +63,21 @@ class QuizManager:
                         'correct_answer': question.answer
                     })
         except Exception as e:
+            # Show error in Streamlit if generation fails
             st.error(f"Error generating questions: {e}")
             return False
-        return True
 
-    # Renders the quiz UI in Streamlit and captures user answers
+        return True  # Successfully generated all questions
+
+    # -------------------------------------
+    # Show questions and collect user input
+    # -------------------------------------
     def attempt_quiz(self):
         for i, q in enumerate(self.questions):
             st.markdown(f"**Question {i + 1}: {q['question']}**")
 
             if q['type'] == 'MCQ':
-                # Show options for MCQ and capture selection
+                # Show options for MCQ and get selected answer
                 user_answer = st.radio(
                     f"Select an answer for Question {i + 1}",
                     q['options'],
@@ -79,16 +85,20 @@ class QuizManager:
                 )
                 self.user_answers.append(user_answer)
             else:
-                # Capture text input for Fill-in-the-Blank
+                # Show input box for Fill-in-the-Blank
                 user_answer = st.text_input(
                     f"Fill in the blank for Question {i + 1}",
                     key=f"fill_blank_{i}"
                 )
                 self.user_answers.append(user_answer)
 
-    # Compares user answers with correct answers and stores results
+    # --------------------------------------------
+    # Check user answers and store evaluation info
+    # --------------------------------------------
     def evaluate_quiz(self):
         self.results = []
+
+        # Compare each user answer with the correct one
         for i, (q, user_ans) in enumerate(zip(self.questions, self.user_answers)):
             result_dict = {
                 'question_number': i + 1,
@@ -99,7 +109,7 @@ class QuizManager:
                 'is_correct': False
             }
 
-            # Determine correctness for MCQ or Fill-in-the-Blank
+            # Check correctness for both MCQ and Fill-in-the-Blank
             if q['type'] == 'MCQ':
                 result_dict['options'] = q['options']
                 result_dict['is_correct'] = user_ans == q['correct_answer']
@@ -109,25 +119,35 @@ class QuizManager:
 
             self.results.append(result_dict)
 
-    # Converts the evaluation results into a DataFrame
+    # -------------------------------
+    # Convert results to a DataFrame
+    # -------------------------------
     def generate_result_dataframe(self):
         if not self.results:
-            return pd.DataFrame()
+            return pd.DataFrame()  # Return empty DataFrame if no results
         return pd.DataFrame(self.results)
 
-    # Saves the result DataFrame to a timestamped CSV file
+    # -------------------------------
+    # Save results to a CSV file
+    # -------------------------------
     def save_to_csv(self, filename_prefix='quiz_results'):
         if not self.results:
             st.warning("No results to save. Please complete the quiz first.")
             return None
 
         df = self.generate_result_dataframe()
+
+        # Create a timestamped filename
         from datetime import datetime
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         unique_filename = f"{filename_prefix}_{timestamp}.csv"
+
+        # Make sure the results directory exists
         os.makedirs('results', exist_ok=True)
         full_path = os.path.join('results', unique_filename)
+
         try:
+            # Save the results as CSV
             df.to_csv(full_path, index=False)
             st.success(f"Results saved to {full_path}")
             return full_path
